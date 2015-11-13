@@ -1,5 +1,5 @@
 {
-  "name": "jsreport-public-teampltes",
+  "name": "jsreport-public-templates",
   "version": "0.0.1",
   "description": "jsreport extension for granting public access to particular templates",
   "scripts": {
