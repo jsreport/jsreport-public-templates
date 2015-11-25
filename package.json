@@ -5,9 +5,13 @@
   "scripts": {
     "test": "mocha test"
   },
+  "homepage": "https://github.com/jsreport/jsreport-public-templates",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jsreport/jsreport-public-templates.git"
+  },
   "keywords": [
-    "jsreport",
-    "analytics"
+    "jsreport"
   ],
   "standard": {
     "ignore": [
@@ -23,10 +27,10 @@
   },
   "license": "LGPL",
   "dependencies": {
-    "q": "^1.4.1",
-    "string": "^3.3.1",
-    "underscore": "^1.8.3",
-    "uuid": "^2.0.1"
+    "q": "1.4.1",
+    "string": "3.3.1",
+    "underscore": "1.8.3",
+    "uuid": "2.0.1"
   },
   "author": "Jan Blaha",
   "devDependencies": {
