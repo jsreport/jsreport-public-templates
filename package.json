@@ -1,6 +1,6 @@
 {
   "name": "jsreport-public-templates",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "jsreport extension for granting public access to particular templates",
   "scripts": {
     "test": "mocha test"
