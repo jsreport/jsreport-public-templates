@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "description": "jsreport extension for granting public access to particular templates",
   "scripts": {
-    "test": "mocha test"
+    "test": "mocha test --timeout=5000"
   },
   "homepage": "https://github.com/jsreport/jsreport-public-templates",
   "repository": {
@@ -39,10 +39,10 @@
     "should": "^7.1.1",
     "standard": "^5.3.1",
     "supertest": "^1.1.0",
-    "jsreport-core": "*",
-    "jsreport-templates": "*",
-    "jsreport-authorization": "*",
-    "jsreport-authentication": "*",
-    "jsreport-express": "*"
+    "jsreport-core": "jsreport/jsreport-core",
+    "jsreport-templates": "jsreport/jsreport-templates",
+    "jsreport-authorization": "jsreport/jsreport-authorization",
+    "jsreport-authentication": "jsreport/jsreport-authentication",
+    "jsreport-express": "jsreport/jsreport-express"
   }
 }

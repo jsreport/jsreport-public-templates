@@ -2,7 +2,6 @@ var should = require('should')
 var path = require('path')
 var supertest = require('supertest')
 var Reporter = require('jsreport-core').Reporter
-var domain = require('domain')
 
 var authOptions = {
   'cookieSession': {
@@ -24,8 +23,6 @@ describe('public-templates', function () {
     })
 
     reporter.init().then(function () {
-      process.domain = process.domain || domain.create()
-      process.domain.req = {user: {username: 'foouser', _id: 'foouser'}}
       done()
     }).fail(done)
   })
@@ -64,7 +61,6 @@ describe('public-templates', function () {
     reporter.documentStore.collection('templates').insert({
       content: 'content', engine: 'none', recipe: 'html', name: 'foo'
     }).then(function (template) {
-      process.domain.req = {user: null, url: '/api/report', body: {options: {}}, query: {}}
       return reporter.render({template: {shortid: template.shortid}}).then(function () {
         done(new Error('Rendering report without auth options should fail.'))
       }).catch(function (e) {
@@ -77,16 +73,15 @@ describe('public-templates', function () {
     reporter.documentStore.collection('templates').insert({
       content: 'content', engine: 'none', recipe: 'html', name: 'foo'
     }).then(function (template) {
-      process.domain.req = {
+      var req = {
         user: null,
         url: '/api/report',
-        body: {options: {authorization: {readToken: 'invalid'}}},
-        query: {}
-      }
-      return reporter.render({
         template: {shortid: template.shortid},
+        query: {},
+        body: {options: {authorization: {readToken: 'invalid'}}},
         options: {authorization: {readToken: 'invalid'}}
-      }).then(function () {
+      }
+      return reporter.render(req).then(function () {
         done(new Error('Rendering report without auth options should fail.'))
       }).catch(function (e) {
         done()
@@ -98,16 +93,15 @@ describe('public-templates', function () {
     reporter.documentStore.collection('templates').insert({
       content: 'content', engine: 'none', recipe: 'html', name: 'foo', readSharingToken: 'token'
     }).then(function (template) {
-      process.domain.req = {
+      var req = {
         user: null,
         url: '/api/report',
-        body: {options: {authorization: {readToken: 'token'}}},
-        query: {}
-      }
-      return reporter.render({
         template: {shortid: template.shortid},
+        query: {},
+        body: {options: {authorization: {readToken: 'token'}}},
         options: {authorization: {readToken: 'token'}}
-      }).then(function () {
+      }
+      return reporter.render(req).then(function () {
         done()
       })
     }).catch(done)
@@ -117,28 +111,29 @@ describe('public-templates', function () {
     reporter.documentStore.collection('templates').insert({
       content: 'content', engine: 'none', recipe: 'html', name: 'foo', writeSharingToken: 'token'
     }).then(function (template) {
-      process.domain.req = {
+      var req = {
         user: null,
         url: '/api/report',
         body: {options: {authorization: {writeToken: 'token'}}},
+        options: {authorization: {writeToken: 'token'}},
+        template: {shortid: template.shortid},
         query: {}
       }
-      return reporter.render({
-        template: {shortid: template.shortid},
-        options: {authorization: {writeToken: 'token'}}
-      }).then(function () {
+      return reporter.render(req).then(function () {
         done()
       })
     }).catch(done)
   })
 
   it('rendering report with req.options.authorization.grantRead should add token to the template', function (done) {
+    var req = {user: {_id: 'foo'}}
     reporter.documentStore.collection('templates').insert({
       content: 'content', engine: 'none', recipe: 'html', name: 'foo'
-    }).then(function (template) {
+    }, req).then(function (template) {
       return reporter.render({
         template: {shortid: template.shortid},
-        options: {authorization: {grantRead: true}}
+        options: {authorization: {grantRead: true}},
+        user: {_id: 'foo'}
       }).then(function () {
         return reporter.documentStore.collection('templates').find({shortid: template.shortid}).then(function (templates) {
           templates[0].readSharingToken.should.be.ok
@@ -149,12 +144,14 @@ describe('public-templates', function () {
   })
 
   it('rendering report with req.options.authorization.grantWrite should add token to the template', function (done) {
+    var req = {user: {_id: 'foo'}}
     reporter.documentStore.collection('templates').insert({
       content: 'content', engine: 'none', recipe: 'html', name: 'foo'
-    }).then(function (template) {
+    }, req).then(function (template) {
       return reporter.render({
         template: {shortid: template.shortid},
-        options: {authorization: {grantWrite: true}}
+        options: {authorization: {grantWrite: true}},
+        user: {_id: 'foo'}
       }).then(function () {
         return reporter.documentStore.collection('templates').find({shortid: template.shortid}).then(function (templates) {
           templates[0].writeSharingToken.should.be.ok
@@ -175,41 +172,39 @@ describe('public-templates', function () {
     })
 
     reporter.init().then(function () {
-      process.domain = process.domain || domain.create()
-      process.domain.req = {user: {username: 'foouser', _id: 'foouser'}}
       done()
     }).fail(done)
   })
 
   it('/odata/templates without access token should response 401', function (done) {
     supertest(reporter.express.app)
-      .get('/odata/templates')
-      .expect(401, done)
+        .get('/odata/templates')
+        .expect(401, done)
   })
 
   it('/odata/templates with access token should response 200', function (done) {
-    process.domain.req = {user: {username: 'foo', _id: 'foo'}, query: {}}
+    var req = {user: {username: 'foo', _id: 'foo'}, query: {}}
 
     reporter.documentStore.collection('templates').insert({
       content: 'content', engine: 'none', recipe: 'html', name: 'foo', readSharingToken: 'foo'
-    }).then(function () {
-      process.domain.req.user = null
+    }, req).then(function () {
+      req.user = null
       supertest(reporter.express.app)
-        .get('/odata/templates?access_token=foo')
-        .expect(200, done)
+          .get('/odata/templates?access_token=foo')
+          .expect(200, done)
     }).catch(done)
   })
 
   it('/public-templates?access_token=xxx should render template', function (done) {
-    process.domain.req = {user: {username: 'foo', _id: 'foo'}, query: {}}
+    var req = {user: {username: 'foo', _id: 'foo'}, query: {}}
 
     reporter.documentStore.collection('templates').insert({
       content: 'content', engine: 'none', recipe: 'html', name: 'foo', readSharingToken: 'foo'
-    }).then(function () {
-      process.domain.req.user = null
+    }, req).then(function () {
+      req.user = null
       supertest(reporter.express.app)
-        .get('/public-templates?access_token=foo')
-        .expect(200, done)
+          .get('/public-templates?access_token=foo')
+          .expect(200, done)
     }).catch(done)
   })
 })
