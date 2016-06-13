@@ -1,9 +1,11 @@
 {
   "name": "jsreport-public-templates",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "jsreport extension for granting public access to particular templates",
   "scripts": {
-    "test": "mocha test --timeout=5000"
+    "test": "mocha test --timeout=5000",
+    "build": "npm run prepublish",
+    "prepublish": "in-publish && jsreport-studio-build || not-in-publish"
   },
   "homepage": "https://github.com/jsreport/jsreport-public-templates",
   "repository": {
@@ -15,34 +17,38 @@
   ],
   "standard": {
     "ignore": [
-      "public/**"
+      "main.js"
     ],
-    "globals": [
-      "describe",
-      "it",
-      "beforeEach",
-      "define",
-      "ace"
-    ]
+    "parser": "babel-eslint",
+    "env": {
+      "node": true,
+      "mocha": true,
+      "browser": true
+    }
   },
   "license": "LGPL",
   "dependencies": {
+    "in-publish": "2.0.0",
     "q": "1.4.1",
     "string": "3.3.1",
     "underscore": "1.8.3",
-    "uuid": "2.0.1"
+    "uuid": "2.0.2"
   },
   "author": "Jan Blaha",
   "devDependencies": {
-    "eslint": "^1.9.0",
-    "mocha": "^2.3.3",
-    "should": "^7.1.1",
-    "standard": "^5.3.1",
-    "supertest": "^1.1.0",
-    "jsreport-core": "jsreport/jsreport-core",
-    "jsreport-templates": "jsreport/jsreport-templates",
-    "jsreport-authorization": "jsreport/jsreport-authorization",
-    "jsreport-authentication": "jsreport/jsreport-authentication",
-    "jsreport-express": "jsreport/jsreport-express"
+    "babel-eslint": "6.0.4",
+    "eslint": "2.11.1",
+    "eslint-config-standard-jsx": "1.2.1",
+    "eslint-plugin-babel": "3.2.0",
+    "jsreport-authentication": "*",
+    "jsreport-authorization": "*",
+    "jsreport-core": "*",
+    "jsreport-express": "*",
+    "jsreport-studio-dev": "0.2.8",
+    "jsreport-templates": "*",
+    "mocha": "2.5.3",
+    "should": "9.0.1",
+    "standard": "7.1.2",
+    "supertest": "1.2.0"
   }
 }

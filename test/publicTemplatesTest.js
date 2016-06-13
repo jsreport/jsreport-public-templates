@@ -3,6 +3,9 @@ var path = require('path')
 var supertest = require('supertest')
 var Reporter = require('jsreport-core').Reporter
 
+// looks like a current bug in jsreport-express, it should start on random port by default
+process.env.PORT = 0
+
 var authOptions = {
   'cookieSession': {
     'secret': 'dasd321as56d1sd5s61vdv32'
