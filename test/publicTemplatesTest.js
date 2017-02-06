@@ -60,7 +60,15 @@ describe('public-templates', function () {
     return reporter.documentStore.collection('templates').insert({
       content: 'content', engine: 'none', recipe: 'html', name: 'foo'
     }).then(function (template) {
-      return reporter.render({template: {shortid: template.shortid}}).then(function () {
+      var req = {
+        user: null,
+        url: '/api/report',
+        template: {shortid: template.shortid},
+        query: {},
+        body: {}
+      }
+
+      return reporter.render(req).then(function () {
         throw new Error('Rendering report without auth options should fail.')
       }).catch(function (e) {
         e.message.should.not.be.eql('Rendering report without auth options should fail.')
@@ -84,6 +92,18 @@ describe('public-templates', function () {
         throw new Error('Rendering report without auth options should fail.')
       }).catch(function (e) {
         e.message.should.not.be.eql('Rendering report without auth options should fail.')
+      })
+    })
+  })
+
+  it('rendering report should succeed when rendering outside an http context', function () {
+    return reporter.documentStore.collection('templates').insert({
+      content: 'content', engine: 'none', recipe: 'html', name: 'foo'
+    }).then(function (template) {
+      return reporter.render({
+        template: { shortid: template.shortid }
+      }).catch(function (e) {
+        throw new Error('Rendering report outside http context should succeed.')
       })
     })
   })
