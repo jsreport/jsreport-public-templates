@@ -96,6 +96,18 @@ describe('public-templates', function () {
     })
   })
 
+  it('rendering report should succeed when rendering outside an http context', function () {
+    return reporter.documentStore.collection('templates').insert({
+      content: 'content', engine: 'none', recipe: 'html', name: 'foo'
+    }).then(function (template) {
+      return reporter.render({
+        template: { shortid: template.shortid }
+      }).catch(function (e) {
+        throw new Error('Rendering report outside http context should succeed.')
+      })
+    })
+  })
+
   it('rendering report should succeed with valid req.options.authorization.readToken', function () {
     return reporter.documentStore.collection('templates').insert({
       content: 'content', engine: 'none', recipe: 'html', name: 'foo', readSharingToken: 'token'
