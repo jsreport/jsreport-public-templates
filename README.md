@@ -7,10 +7,10 @@ jsreport extension for granting public access to particular templates
 See http://jsreport.net/learn/public-templates
 
 
-##Installation
+## Installation
 > npm install jsreport-public-templates
 
-##jsreport-core
+## jsreport-core
 You can apply this extension also manually to [jsreport-core](https://github.com/jsreport/jsreport-core)
 
 ```js
