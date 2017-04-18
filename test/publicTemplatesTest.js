@@ -36,7 +36,7 @@ describe('public-templates', function () {
         should(token).ok
       }).then(function () {
         return reporter.documentStore.collection('templates').find({shortid: template.shortid}).then(function (template) {
-          template[0].readSharingToken.should.be.ok          
+          template[0].readSharingToken.should.be.ok
         })
       })
     })
@@ -50,7 +50,7 @@ describe('public-templates', function () {
         should(token).ok
       }).then(function () {
         return reporter.documentStore.collection('templates').find({shortid: template.shortid}).then(function (template) {
-          template[0].writeSharingToken.should.be.ok       
+          template[0].writeSharingToken.should.be.ok
         })
       })
     })
@@ -151,7 +151,7 @@ describe('public-templates', function () {
         user: {_id: 'foo'}
       }).then(function () {
         return reporter.documentStore.collection('templates').find({shortid: template.shortid}).then(function (templates) {
-          templates[0].readSharingToken.should.be.ok       
+          templates[0].readSharingToken.should.be.ok
         })
       })
     })
@@ -168,7 +168,7 @@ describe('public-templates', function () {
         user: {_id: 'foo'}
       }).then(function () {
         return reporter.documentStore.collection('templates').find({shortid: template.shortid}).then(function (templates) {
-          templates[0].writeSharingToken.should.be.ok        
+          templates[0].writeSharingToken.should.be.ok
         })
       })
     })
@@ -186,7 +186,7 @@ describe('public-templates', function () {
 
     reporter.init().then(function () {
       done()
-    }).fail(done)
+    }).catch(done)
   })
 
   it('/odata/templates without access token should response 401', function (done) {
