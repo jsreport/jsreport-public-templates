@@ -132,7 +132,7 @@
 	  }, {
 	    key: 'generateLink',
 	    value: function () {
-	      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(method) {
+	      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(method) {
 	        var response, entity, tokenProperty, updated;
 	        return regeneratorRuntime.wrap(function _callee$(_context) {
 	          while (1) {
@@ -205,35 +205,6 @@
 	          'When requesting this link, jsreport will skip the authentication and authorization and render this particular template. User will be also able to execute any of the jsreport recipes from the served page but won\'t be allowed to access any of the existing templates or other entities.'
 	        ),
 	        _react2.default.createElement(
-	          'h2',
-	          null,
-	          'Link with write permissions'
-	        ),
-	        entity.writeSharingToken ? _react2.default.createElement(
-	          'div',
-	          null,
-	          _react2.default.createElement(
-	            'a',
-	            { target: '_blank', href: _jsreportStudio2.default.rootUrl + ('/public-templates?access_token=' + entity.writeSharingToken) },
-	            _jsreportStudio2.default.rootUrl + ('/public-templates?access_token=' + entity.writeSharingToken)
-	          )
-	        ) : _react2.default.createElement(
-	          'div',
-	          null,
-	          _react2.default.createElement(
-	            'button',
-	            { type: 'button', className: 'button confirmation', onClick: function onClick() {
-	                return _this2.generateLink('write');
-	              } },
-	            'Generate Write Link'
-	          )
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: _ShareModal2.default.infoBox },
-	          'In addition to the "read link" user will be also able to update this particular template for example using jsreport embedded editor.'
-	        ),
-	        _react2.default.createElement(
 	          'div',
 	          { className: 'button-bar' },
 	          _react2.default.createElement(
@@ -279,8 +250,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../node_modules/css-loader/index.js?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!./../node_modules/sass-loader/index.js?outputStyle=expanded&sourceMap!./ShareModal.scss", function() {
-				var newContent = require("!!./../node_modules/css-loader/index.js?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!./../node_modules/sass-loader/index.js?outputStyle=expanded&sourceMap!./ShareModal.scss");
+			module.hot.accept("!!./../node_modules/css-loader/index.js?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!./../node_modules/postcss-loader/index.js!./../node_modules/sass-loader/index.js?outputStyle=expanded&sourceMap!./ShareModal.scss", function() {
+				var newContent = require("!!./../node_modules/css-loader/index.js?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!./../node_modules/postcss-loader/index.js!./../node_modules/sass-loader/index.js?outputStyle=expanded&sourceMap!./ShareModal.scss");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -298,7 +269,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".infoBox___1bW4r {\n  margin: 1rem 0rem;\n  background-color: #cde7f2;\n  padding: 1rem;\n}\n", "", {"version":3,"sources":["/./studio/studio/ShareModal.scss"],"names":[],"mappings":"AAAA;EACE,kBAAkB;EAClB,0BAA0B;EAC1B,cAAc;CACf","file":"ShareModal.scss","sourcesContent":[".infoBox {\r\n  margin: 1rem 0rem;\r\n  background-color: #cde7f2;\r\n  padding: 1rem;\r\n}"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, ".infoBox___1bW4r {\n  margin: 1rem 0rem;\n  background-color: #cde7f2;\n  padding: 1rem;\n}\n", "", {"version":3,"sources":["/./studio/studio/ShareModal.scss"],"names":[],"mappings":"AAAA;EACE,kBAAiB;EACjB,0BAAyB;EACzB,cAAa;CACd","file":"ShareModal.scss","sourcesContent":[".infoBox {\r\n  margin: 1rem 0rem;\r\n  background-color: #cde7f2;\r\n  padding: 1rem;\r\n}"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 	exports.locals = {

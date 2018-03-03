@@ -4,7 +4,8 @@
   "description": "jsreport extension for granting public access to particular templates",
   "scripts": {
     "test": "mocha test --timeout=5000",
-    "build": "npm run prepublish",
+    "start": "jsreport-studio-start --httpPort 5488",
+    "build": "jsreport-studio-build",
     "prepublish": "in-publish && jsreport-studio-build || not-in-publish"
   },
   "homepage": "https://github.com/jsreport/jsreport-public-templates",
@@ -28,28 +29,28 @@
   },
   "license": "LGPL",
   "dependencies": {
-    "bluebird": "3.5.0",
+    "bluebird": "3.5.1",
     "string": "3.3.3",
     "underscore": "1.8.3",
-    "uuid": "2.0.2"
+    "uuid": "3.2.1"
   },
   "author": "Jan Blaha",
   "devDependencies": {
-    "babel-eslint": "6.0.4",
-    "eslint": "2.11.1",
-    "eslint-config-standard-jsx": "1.2.1",
-    "eslint-plugin-babel": "3.2.0",
+    "babel-eslint": "8.2.2",
+    "eslint": "4.18.2",
+    "eslint-config-standard-jsx": "5.0.0",
+    "eslint-plugin-babel": "4.1.2",
     "in-publish": "2.0.0",
     "jsreport-authentication": "jsreport/jsreport-authentication#2.0.0-beta",
     "jsreport-authorization": "jsreport/jsreport-authorization#2.0.0-beta",
     "jsreport-core": "jsreport/jsreport-core#2.0.0-beta",
     "jsreport-express": "jsreport/jsreport-express#2.0.0-beta",
-    "jsreport-studio-dev": "1.1.0",
+    "jsreport-studio-dev": "1.1.2",
     "jsreport-templates": "jsreport/jsreport-templates#2.0.0-beta",
-    "mocha": "2.5.3",
-    "should": "9.0.1",
-    "standard": "7.1.2",
-    "supertest": "1.2.0"
+    "mocha": "5.0.1",
+    "should": "13.2.1",
+    "standard": "11.0.0",
+    "supertest": "3.0.0"
   },
   "files": [
     "lib",

@@ -13,154 +13,6 @@ const authOptions = {
   }
 }
 
-describe('public-templates', function () {
-  let reporter
-
-  beforeEach(function () {
-    reporter = jsreport({ authentication: authOptions, tasks: { strategy: 'in-process' } })
-    reporter.use(require('../')())
-    reporter.use(require('jsreport-templates')())
-    reporter.use(require('jsreport-express')())
-    reporter.use(require('jsreport-authentication')())
-    reporter.use(require('jsreport-authorization')())
-
-    return reporter.init()
-  })
-
-  it('generating read sharing token should add readSharingToken into template', async () => {
-    const template = await reporter.documentStore.collection('templates').insert({
-      content: 'content', engine: 'none', recipe: 'html', name: 'foo'
-    })
-
-    const token = await reporter.publicTemplates.generateSharingToken(template.shortid, 'read')
-    token.should.be.ok()
-    const refreshedTemplates = await reporter.documentStore.collection('templates').find({shortid: template.shortid})
-    refreshedTemplates[0].readSharingToken.should.be.ok()
-  })
-
-  it('generating write sharing token should add writeSharingToken into template', async () => {
-    const template = await reporter.documentStore.collection('templates').insert({
-      content: 'content', engine: 'none', recipe: 'html', name: 'foo'
-    })
-
-    const token = await reporter.publicTemplates.generateSharingToken(template.shortid, 'write')
-    token.should.be.ok()
-    const refreshedTemplates = await reporter.documentStore.collection('templates').find({shortid: template.shortid})
-    refreshedTemplates[0].writeSharingToken.should.be.ok()
-  })
-
-  it('rendering report should fail when req.options.authorization.readToken not specified', async () => {
-    const template = await reporter.documentStore.collection('templates').insert({
-      content: 'content', engine: 'none', recipe: 'html', name: 'foo'
-    })
-    const req = {
-      user: null,
-      url: '/api/report',
-      template: {shortid: template.shortid},
-      query: {},
-      body: {}
-    }
-
-    try {
-      await reporter.render(req)
-      throw new Error('Rendering report without auth options should fail.')
-    } catch (e) {
-      e.message.should.not.be.eql('Rendering report without auth options should fail.')
-    }
-  })
-
-  it.only('rendering report should fail when req.options.authorization.readToken has invalid token', async () => {
-    const template = await reporter.documentStore.collection('templates').insert({
-      content: 'content', engine: 'none', recipe: 'html', name: 'foo'
-    })
-    const req = {
-      user: null,
-      url: '/api/report',
-      template: {shortid: template.shortid},
-      query: {},
-      body: {options: {authorization: {readToken: 'invalid'}}},
-      options: {authorization: {readToken: 'invalid'}}
-    }
-
-    try {
-      await reporter.render(req)
-      throw new Error('Rendering report without auth options should fail.')
-    } catch (e) {
-      e.message.should.not.be.eql('Rendering report without auth options should fail.')
-    }
-  })
-
-  it('rendering report should succeed when rendering outside an http context', async () => {
-    const template = await reporter.documentStore.collection('templates').insert({
-      content: 'content', engine: 'none', recipe: 'html', name: 'foo'
-    })
-    await reporter.render({
-      template: { shortid: template.shortid }
-    })
-  })
-
-  it('rendering report should succeed with valid req.options.authorization.readToken', async () => {
-    const template = await reporter.documentStore.collection('templates').insert({
-      content: 'content', engine: 'none', recipe: 'html', name: 'foo', readSharingToken: 'token'
-    })
-
-    const req = {
-      user: null,
-      url: '/api/report',
-      template: {shortid: template.shortid},
-      query: {},
-      body: {options: {authorization: {readToken: 'token'}}},
-      options: {authorization: {readToken: 'token'}}
-    }
-    return reporter.render(req)
-  })
-
-  it('rendering report should succeed with valid req.options.authorization.writeToken', async () => {
-    const template = await reporter.documentStore.collection('templates').insert({
-      content: 'content', engine: 'none', recipe: 'html', name: 'foo', writeSharingToken: 'token'
-    })
-    const req = {
-      user: null,
-      url: '/api/report',
-      body: {options: {authorization: {writeToken: 'token'}}},
-      options: {authorization: {writeToken: 'token'}},
-      template: {shortid: template.shortid},
-      query: {}
-    }
-    return reporter.render(req)
-  })
-
-  it('rendering report with req.options.authorization.grantRead should add token to the template', async () => {
-    const req = {user: {_id: 'foo'}}
-    const template = await reporter.documentStore.collection('templates').insert({
-      content: 'content', engine: 'none', recipe: 'html', name: 'foo'
-    }, req)
-
-    await reporter.render({
-      template: {shortid: template.shortid},
-      options: {authorization: {grantRead: true}},
-      user: {_id: 'foo'}
-    })
-
-    const refreshedTemplates = await reporter.documentStore.collection('templates').find({shortid: template.shortid})
-    refreshedTemplates[0].readSharingToken.should.be.ok()
-  })
-
-  it('rendering report with req.options.authorization.grantWrite should add token to the template', async () => {
-    const req = {user: {_id: 'foo'}}
-    const template = await reporter.documentStore.collection('templates').insert({
-      content: 'content', engine: 'none', recipe: 'html', name: 'foo'
-    }, req)
-    await reporter.render({
-      template: {shortid: template.shortid},
-      options: {authorization: {grantWrite: true}},
-      user: {_id: 'foo'}
-    })
-    const refreshedTempaltes = reporter.documentStore.collection('templates').find({shortid: template.shortid})
-    refreshedTempaltes[0].writeSharingToken.should.be.ok()
-  })
-})
-
 describe('public-templates', () => {
   let reporter
 
@@ -178,34 +30,44 @@ describe('public-templates', () => {
     return reporter.init()
   })
 
-  it('/odata/templates without access token should response 401', () => {
+  afterEach(() => reporter.close())
+
+  it('/public-templates?access_token=xxx should return 401 on wrong', async () => {
     return supertest(reporter.express.app)
-        .get('/odata/templates')
-        .expect(401)
+      .get('/public-templates?access_token=foo')
+      .expect(401)
   })
 
-  it('/odata/templates with access token should response 200', async () => {
-    const req = {user: {username: 'foo', _id: 'foo'}, query: {}}
-
+  it('/public-templates?access_token=xxx with valid token should render template', async () => {
     await reporter.documentStore.collection('templates').insert({
-      content: 'content', engine: 'none', recipe: 'html', name: 'foo', readSharingToken: 'foo'
-    }, req)
+      name: 'foo',
+      engine: 'none',
+      recipe: 'html',
+      content: 'foo',
+      readSharingToken: 'xxx'
+    })
 
-    req.user = null
     return supertest(reporter.express.app)
-            .get('/odata/templates?access_token=foo')
-            .expect(200)
+      .get('/public-templates?access_token=xxx')
+      .expect(200)
+      .expect('foo')
   })
 
-  it('/public-templates?access_token=xxx should render template', async () => {
-    const req = {user: {username: 'foo', _id: 'foo'}, query: {}}
-
+  it('/api/templates/sharing/:shortid/grant/:access should create sharing token on template', async () => {
     await reporter.documentStore.collection('templates').insert({
-      content: 'content', engine: 'none', recipe: 'html', name: 'foo', readSharingToken: 'foo'
-    }, req)
-    req.user = null
-    return supertest(reporter.express.app)
-            .get('/public-templates?access_token=foo')
-            .expect(200)
+      name: 'foo',
+      shortid: 'foo',
+      engine: 'none',
+      recipe: 'html',
+      content: 'foo'
+    })
+
+    await supertest(reporter.express.app)
+      .get(`/api/templates/sharing/foo/grant/read`)
+      .set('Authorization', 'Basic ' + Buffer.from('admin:password').toString('base64'))
+      .expect(200)
+
+    const templates = await reporter.documentStore.collection('templates').find({})
+    templates[0].readSharingToken.should.be.ok()
   })
 })

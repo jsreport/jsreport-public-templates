@@ -45,21 +45,6 @@ export default class ShareModal extends Component {
         templates or other entities.
       </div>
 
-      <h2>Link with write permissions</h2>
-      {entity.writeSharingToken ? <div>
-        <a target='_blank' href={Studio.rootUrl + `/public-templates?access_token=${entity.writeSharingToken}`}>
-          {Studio.rootUrl + `/public-templates?access_token=${entity.writeSharingToken}`}
-        </a>
-      </div> : <div>
-        <button type='button' className='button confirmation' onClick={() => this.generateLink('write')}>Generate Write Link
-        </button>
-      </div>
-      }
-      <div className={Style.infoBox}>
-        In addition to the "read link" user will be also able to update this particular template for example using
-        jsreport embedded editor.
-      </div>
-
       <div className='button-bar'>
         <button className='button confirmation' onClick={() => this.props.close()}>ok</button>
       </div>
