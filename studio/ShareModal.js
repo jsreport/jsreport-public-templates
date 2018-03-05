@@ -13,7 +13,7 @@ export default class ShareModal extends Component {
   }
 
   async generateLink (method) {
-    const response = await Studio.api.get(`/api/templates/sharing/${this.props.options.entity.shortid}/grant/${method}`)
+    const response = await Studio.api.post(`/api/templates/sharing/${this.props.options.entity.shortid}/access/${method}`, {})
     const entity = this.state.entity
     const tokenProperty = method + 'SharingToken'
     const updated = {
@@ -22,6 +22,12 @@ export default class ShareModal extends Component {
     }
     Studio.updateEntity(updated)
     this.setState({ entity: updated })
+  }
+
+  async removeLink () {
+    Studio.updateEntity({_id: this.state.entity._id, readSharingToken: null})
+    Studio.saveEntity(this.state.entity._id)
+    this.setState({entity: {...this.state.entity, readSharingToken: null}})
   }
 
   render () {
@@ -47,6 +53,7 @@ export default class ShareModal extends Component {
 
       <div className='button-bar'>
         <button className='button confirmation' onClick={() => this.props.close()}>ok</button>
+        {entity.readSharingToken ? <button className='button danger' onClick={() => this.removeLink()}>Remove</button> : <span />}
       </div>
     </div>
   }

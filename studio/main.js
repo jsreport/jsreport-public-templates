@@ -139,7 +139,7 @@
 	            switch (_context.prev = _context.next) {
 	              case 0:
 	                _context.next = 2;
-	                return _jsreportStudio2.default.api.get('/api/templates/sharing/' + this.props.options.entity.shortid + '/grant/' + method);
+	                return _jsreportStudio2.default.api.post('/api/templates/sharing/' + this.props.options.entity.shortid + '/access/' + method, {});
 	
 	              case 2:
 	                response = _context.sent;
@@ -163,6 +163,32 @@
 	      }
 	
 	      return generateLink;
+	    }()
+	  }, {
+	    key: 'removeLink',
+	    value: function () {
+	      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+	        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+	          while (1) {
+	            switch (_context2.prev = _context2.next) {
+	              case 0:
+	                _jsreportStudio2.default.updateEntity({ _id: this.state.entity._id, readSharingToken: null });
+	                _jsreportStudio2.default.saveEntity(this.state.entity._id);
+	                this.setState({ entity: _extends({}, this.state.entity, { readSharingToken: null }) });
+	
+	              case 3:
+	              case 'end':
+	                return _context2.stop();
+	            }
+	          }
+	        }, _callee2, this);
+	      }));
+	
+	      function removeLink() {
+	        return _ref2.apply(this, arguments);
+	      }
+	
+	      return removeLink;
 	    }()
 	  }, {
 	    key: 'render',
@@ -213,7 +239,14 @@
 	                return _this2.props.close();
 	              } },
 	            'ok'
-	          )
+	          ),
+	          entity.readSharingToken ? _react2.default.createElement(
+	            'button',
+	            { className: 'button danger', onClick: function onClick() {
+	                return _this2.removeLink();
+	              } },
+	            'Remove'
+	          ) : _react2.default.createElement('span', null)
 	        )
 	      );
 	    }

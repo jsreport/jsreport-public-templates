@@ -53,7 +53,7 @@ describe('public-templates', () => {
       .expect('foo')
   })
 
-  it('/api/templates/sharing/:shortid/grant/:access should create sharing token on template', async () => {
+  it('/api/templates/sharing/:shortid/access/:access should create sharing token on template', async () => {
     await reporter.documentStore.collection('templates').insert({
       name: 'foo',
       shortid: 'foo',
@@ -63,7 +63,7 @@ describe('public-templates', () => {
     })
 
     await supertest(reporter.express.app)
-      .get(`/api/templates/sharing/foo/grant/read`)
+      .post(`/api/templates/sharing/foo/access/read`)
       .set('Authorization', 'Basic ' + Buffer.from('admin:password').toString('base64'))
       .expect(200)
 
