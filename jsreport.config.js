@@ -1,7 +1,8 @@
+
 module.exports = {
   'name': 'public-templates',
-  'dependencies': [ 'templates', 'authentication', 'authorization' ],
   'main': 'lib/main.js',
+  'dependencies': [ 'templates', 'authentication', 'authorization' ],
   'embeddedSupport': true,
   'skipInExeRender': true
 }

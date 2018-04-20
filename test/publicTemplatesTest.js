@@ -18,7 +18,9 @@ describe('public-templates', () => {
 
   beforeEach(() => {
     reporter = jsreport({
-      authentication: authOptions
+      extensions: {
+        authentication: authOptions
+      }
     })
 
     reporter.use(require('../')())
