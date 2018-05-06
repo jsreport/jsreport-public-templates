@@ -28,5 +28,6 @@ node_modules
 
 .idea
 
-studio/main.js
+# temporary disable
+# studio/main.js
 studio/main.js.map
