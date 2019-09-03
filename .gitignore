@@ -28,5 +28,12 @@ node_modules
 
 .idea
 
-studio/main.js
-studio/main.js.map
+data
+
+# studio/main.js
+# studio/main.js.map
+
+# config files
+dev.config.json
+prod.config.json
+jsreport.config.json
