@@ -3,14 +3,16 @@ import React, { Component } from 'react'
 import Studio from 'jsreport-studio'
 import Style from './ShareModal.scss'
 
-export default class ShareModal extends Component {
+class ShareModal extends Component {
   static propTypes = {
     close: PropTypes.func.isRequired,
     options: PropTypes.object.isRequired
   }
 
-  componentWillMount () {
-    this.state = { entity: this.props.options.entity }
+  constructor (props) {
+    super(props)
+
+    this.state = { entity: props.options.entity }
   }
 
   async generateLink (method) {
@@ -61,3 +63,5 @@ export default class ShareModal extends Component {
     )
   }
 }
+
+export default ShareModal

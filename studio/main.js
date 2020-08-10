@@ -168,18 +168,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var ShareModal = function (_Component) {
   _inherits(ShareModal, _Component);
 
-  function ShareModal() {
+  function ShareModal(props) {
     _classCallCheck(this, ShareModal);
 
-    return _possibleConstructorReturn(this, (ShareModal.__proto__ || Object.getPrototypeOf(ShareModal)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (ShareModal.__proto__ || Object.getPrototypeOf(ShareModal)).call(this, props));
+
+    _this.state = { entity: props.options.entity };
+    return _this;
   }
 
   _createClass(ShareModal, [{
-    key: 'componentWillMount',
-    value: function componentWillMount() {
-      this.state = { entity: this.props.options.entity };
-    }
-  }, {
     key: 'generateLink',
     value: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(method) {
