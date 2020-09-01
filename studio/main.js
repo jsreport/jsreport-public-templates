@@ -137,11 +137,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _propTypes = __webpack_require__(3);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _react = __webpack_require__(4);
+var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -149,7 +145,7 @@ var _jsreportStudio = __webpack_require__(0);
 
 var _jsreportStudio2 = _interopRequireDefault(_jsreportStudio);
 
-var _ShareModal = __webpack_require__(5);
+var _ShareModal = __webpack_require__(4);
 
 var _ShareModal2 = _interopRequireDefault(_ShareModal);
 
@@ -303,26 +299,16 @@ var ShareModal = function (_Component) {
   return ShareModal;
 }(_react.Component);
 
-ShareModal.propTypes = {
-  close: _propTypes2.default.func.isRequired,
-  options: _propTypes2.default.object.isRequired
-};
 exports.default = ShareModal;
 
 /***/ }),
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = Studio.libraries['prop-types'];
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
 module.exports = Studio.libraries['react'];
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin

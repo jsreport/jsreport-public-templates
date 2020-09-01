@@ -1,14 +1,8 @@
-import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import Studio from 'jsreport-studio'
 import Style from './ShareModal.scss'
 
 class ShareModal extends Component {
-  static propTypes = {
-    close: PropTypes.func.isRequired,
-    options: PropTypes.object.isRequired
-  }
-
   constructor (props) {
     super(props)
 
