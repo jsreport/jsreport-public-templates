@@ -1,6 +1,6 @@
 {
   "name": "jsreport-public-templates",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "jsreport extension for granting public access to particular templates",
   "scripts": {
     "test": "mocha test --timeout=5000",
